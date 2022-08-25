@@ -4,6 +4,7 @@ import ImageGallery from './ImageGallery/ImageGallery';
 import Searchbar from './Searchbar/Searchbar';
 import Button from './Button/Button';
 import Loader from './Loader/Loader';
+import Modal from './Modal/Modal';
 
 class App extends Component {
   state = {
@@ -12,6 +13,10 @@ class App extends Component {
     error: null,
     page: 1,
     value: '',
+    modalOpen: false,
+    modalContent: {
+      src: '',
+    },
   };
 
   componentDidUpdate(_, prevState) {
@@ -54,15 +59,31 @@ class App extends Component {
     this.setState({ value, items: [] });
   };
 
-  render() {
-    const { loadMore, handleFormSubmit } = this;
-    const { items, loading, error } = this.state;
+  openModal = modalContent => {
+    this.setState({
+      modalOpen: true,
+      modalContent: {
+        src: modalContent,
+      },
+    });
+  };
 
+  closeModal = () => {
+    this.setState({
+      modalOpen: false,
+    });
+  };
+
+  render() {
+    const { loadMore, handleFormSubmit, closeModal, openModal } = this;
+    const { items, loading, error, modalOpen, modalContent } = this.state;
+    
     return (
       <div className="app">
         <header className="searchbar">
           <Searchbar onSubmit={handleFormSubmit} />
         </header>
+
         {loading && <Loader />}
         {error && (
           <p>
@@ -70,7 +91,15 @@ class App extends Component {
             Не удалось загрузить изображения
           </p>
         )}
-        <ImageGallery items={items} />
+
+        <ImageGallery onClick={openModal} items={items} />
+
+        {modalOpen && (
+          <Modal onClose={closeModal}>
+            <img src={modalContent.src} alt="img"></img>
+          </Modal>
+        )}
+
         {items.length && <Button onClick={loadMore} />}
       </div>
     );
