@@ -100,7 +100,7 @@ class App extends Component {
           </Modal>
         )}
 
-        {items.length && <Button onClick={loadMore} />}
+        {items.length >= 12 && <Button onClick={loadMore} />}
       </div>
     );
   }
