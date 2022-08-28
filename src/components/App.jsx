@@ -56,7 +56,7 @@ class App extends Component {
   };
 
   handleFormSubmit = value => {
-    this.setState({ value, items: [] });
+    this.setState({ value, items: [], page: 1 });
   };
 
   openModal = modalContent => {
@@ -77,7 +77,7 @@ class App extends Component {
   render() {
     const { loadMore, handleFormSubmit, closeModal, openModal } = this;
     const { items, loading, error, modalOpen, modalContent } = this.state;
-    
+
     return (
       <div className="app">
         <header className="searchbar">
